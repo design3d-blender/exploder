@@ -10,20 +10,33 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
+import bpy
+from .operators import exploder as exploder_ot
+from .panels import exploder as exploder_pt
 
 bl_info = {
     "name" : "Exploder",
     "author" : "DESIGN3D",
-    "description" : "",
+    "description" : "Automatic exploded view and animation generator",
     "blender" : (2, 80, 0),
     "version" : (0, 0, 1),
     "location" : "",
     "warning" : "",
-    "category" : "Generic"
+    "category" : "Animation"
 }
 
+classes = [
+    exploder_ot,
+    exploder_pt,
+]
+
 def register():
-    ...
+    for cls in classes:
+        cls.register()
 
 def unregister():
-    ...
+    for cls in classes:
+        cls.unregister()
+
+if __name__ == "__main__":
+    register()
