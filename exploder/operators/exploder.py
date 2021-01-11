@@ -8,6 +8,16 @@ class EXP_OT_explode(bpy.types.Operator):
     bl_options = {"REGISTER", "UNDO"}
 
     def execute(self, context):
+        
+        def getParent(self, obj):
+            if obj.parent == None:
+                return obj
+            else: 
+                return getParent(self, obj.parent)
+
+        def selectParent(self, selection):
+            if len(selection) == 1:
+                return getParent(self, selection[0])
 
         def move(obj, depth):
             print("  "*depth + obj.name)
@@ -29,8 +39,9 @@ class EXP_OT_explode(bpy.types.Operator):
                 explode(obj.children, depth)
 
         context.scene.tool_settings.use_transform_data_origin = False
-        root = context.selected_objects[0]
-        print(root.name)
+        root = selectParent(self, context.selected_objects)
+        bpy.ops.object.select_all(action='DESELECT')
+        root.select_set(True)
         root.keyframe_insert(data_path="location", frame=0)
         root.select_set(False)
         explode(root.children, 0)
